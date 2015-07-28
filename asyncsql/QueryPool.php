@@ -42,11 +42,13 @@ class QueryPool implements \Countable{
 
     /**
      * @param callable $callback
+     * @param ...$args
      */
-    public function doCollection(callable $callback){
-        foreach($this->querys as $query){
+    public function doCollection(callable $callback, ...$args){
+        foreach($this->querys as $k => $query){
             if($query->isGarbage()){
-                $callback($query);
+                $callback($query, ...$args);
+                unset($this->querys[$k]);
             }
         }
     }
